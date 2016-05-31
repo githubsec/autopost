@@ -7,11 +7,11 @@ from wordpress_xmlrpc.compat import xmlrpc_client
 from wordpress_xmlrpc.methods import media, posts
 from urllib.request import urlopen
 
-url = 'https://unsplash.com/'
+url = 'https://unsplash.com/'##你想采集图片的网址，改网站的话，相应的获取图片段的代码也需要修改
 
 
 
-client = Client('http://yoursite/xmlrpc.php', 'yourwordpress@email.address', 'password')
+client = Client('http://yoursite/xmlrpc.php', 'yourwordpress@email.address', 'password')##从这一行到post_picture函数结束，是在xmlrpc源码修改得来
 
 
 def post_picture(image_url):
@@ -32,7 +32,7 @@ def post_picture(image_url):
     post.id = client.call(posts.NewPost(post))
 
 
-def geturl(latesturl):
+def geturl(latesturl):##从解析来的字符串中获取图片url
     i = 0
     xxxurl = ''
     while latesturl[i] != '"':
@@ -45,7 +45,7 @@ def geturl(latesturl):
     return xxxurl
 
 
-def get_images_url(url, data=None):
+def get_images_url(url, data=None):##获取10张图片，因为unsplash每10天更新10张图片
     wb_data = requests.get(url)
     ## time.sleep(10)
     soup = BeautifulSoup(wb_data.text, 'lxml')
@@ -85,7 +85,7 @@ print(latestfirst)
 itemfile = open('item', 'r')
 item = int(itemfile.read())
 itemfile.close()
-if first == latestfirst:
+if first == latestfirst:#判断unsplash是否已经更新图片，如果没有，从存储在date的10个图片url中获取一个，如果已经更新，则更新date文件的数据
     theurl = pictures[item]
     theurl = theurl[0:-1]
     post_picture(theurl)
